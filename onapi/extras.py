@@ -1,5 +1,5 @@
-# Simple utilities that leverage the ON API of general use to the Blackbaud community.
-# More complex interactions or data parsing should be done in your own code, not in BBAPI-Toolkit.
+# Simple utilities, of general use to the Blackbaud community, that leverage the ON API.
+# More complex interactions or data parsing should be done in your own code, not in BBAPI_Toolkit.
 
 import requests
 import json
