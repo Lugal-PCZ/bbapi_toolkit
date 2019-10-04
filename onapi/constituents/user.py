@@ -1,37 +1,39 @@
-from ... import requests
-from ... import urlbase
-from ... import agent
-from ... import token
-
-import json
-from typing import Union
+import requests as _requests
+import json as _json
+from typing import Union as _Union
 
 
-def get_user(userId: int) -> dict:
+def get_user(client: object, userId: int) -> dict:
     """Get basic information for a Blackbaud user.
 
     Documentation:
         https://docs.blackbaud.com/on-api-docs/api/constituents/user/get-user-ID
 
     Args:
+        client (object): The ON API client object.
         userId (int): The Blackbaud user ID for the requested user.
 
     Returns:
         Dictionary of the results.
     """
-    r = requests.get('{}/user/{}'.format(urlbase, userId), params={'t': token}, headers=agent)
+    r = _requests.get(
+        f'{client.urlbase}/user/{userId}',
+        params={'t': client.token},
+        headers=client.agent,
+    )
     return r.json()
 get_user_basic_info = get_user  ## Function alias with a nicer name than the ON API endpoint.
 
 
-def get_users(roleIDs: Union[int, list], **kwargs) -> list:
+def get_users(client: object, roleIDs: _Union[int, list], **kwargs) -> list:
     """Get basic information for a Blackbaud user.
 
     Documentation:
         https://docs.blackbaud.com/on-api-docs/api/constituents/user/get-user-all
 
     Args:
-        roleIDs (Union[int, list]): The Blackbaud role ids to search.
+        client (object): The ON API client object.
+        roleIDs (_Union[int, list]): The Blackbaud role ids to search.
         **kwargs: Optional filters limiting the results. The options are:
             firstname (str): Performs a partial match on user first names.
             lastname (str): Performs a partial match on user last names.
@@ -47,56 +49,71 @@ def get_users(roleIDs: Union[int, list], **kwargs) -> list:
     """
     if type(roleIDs) == list:
         roleIDs = ','.join(map(str, roleIDs))
-    params = {'t': token, 'roleIDs': roleIDs}
+    params = {'t': client.token, 'roleIDs': roleIDs}
     params.update(kwargs)
-    r = requests.get('{}/user/all'.format(urlbase), params=params, headers=agent)
+    r = _requests.get(
+        f'{client.urlbase}/user/all',
+        params=params,
+        headers=client.agent,
+    )
     return r.json()
 
 
-def get_user_extended(userId: int) -> dict:
+def get_user_extended(client: object, userId: int) -> dict:
     """Get extended information for a Blackbaud user.
 
     Documentation:
         https://docs.blackbaud.com/on-api-docs/api/constituents/user/get-user-extended-ID
 
     Args:
+        client (object): The ON API client object.
         userId (int): The Blackbaud user ID for the requested user.
 
     Returns:
         Dictionary of the results.
     """
-    r = requests.get('{}/user/extended/{}'.format(urlbase, userId), params={'t': token}, headers=agent)
+    r = _requests.get(
+        f'{client.urlbase}/user/extended/{userId}',
+        params={'t': client.token},
+        headers=client.agent,
+    )
     return r.json()
 
 
-def get_all_user_extended(userId: int, relationship: bool=False) -> dict:
+def get_all_user_extended(client: object, userId: int, relationship: bool=False) -> dict:
     """Get extended information for a Blackbaud user, regardless of publish settings.
 
     Documentation:
         https://docs.blackbaud.com/on-api-docs/api/constituents/user/get-user-extended-all
 
     Args:
+        client (object): The ON API client object.
         userId (int): The Blackbaud user ID for the requested user.
         relationship (bool): Enter True if the userId's relationship should be returned.
 
     Returns:
         Dictionary of the results.
     """
-    params = {'t': token}
+    params = {'t': client.token}
     if relationship:
         params.update({'relationship': relationship})
-    r = requests.get('{}/user/extended/all/{}'.format(urlbase, userId), params=params, headers=agent)
+    r = _requests.get(
+        f'{client.urlbase}/user/extended/all/{userId}',
+        params=params,
+        headers=client.agent,
+    )
     return r.json()
 get_user_extended_info = get_all_user_extended  ## Function alias with a nicer name than the ON API endpoint.
 
 
-def post_user(FirstName: str, LastName: str) -> int:
+def post_user(client: object, FirstName: str, LastName: str) -> int:
     """Creates a new Blackbaud user.
 
     Documentation:
         https://on-api.developer.blackbaud.com/API/constituents/user/post-user/
 
     Args:
+        client (object): The ON API client object.
         firstname (str): The user's first name.
         lastname (str): The user's last name.
 
@@ -105,19 +122,24 @@ def post_user(FirstName: str, LastName: str) -> int:
     """
     newuser = {'FirstName': FirstName, 'LastName': LastName}
     headers = {'Content-Type': 'application/json'}
-    headers.update(agent)
-    r = requests.post("{}/user?t={}".format(urlbase, token), data=json.dumps(newuser), headers=headers)
+    headers.update(client.agent)
+    r = _requests.post(
+        f'{client.urlbase}/user?t={client.token}',
+        data=_json.dumps(newuser),
+        headers=headers,
+    )
     return r.json()['Message']
 create_user = post_user  ## Function alias with a nicer name than the ON API endpoint.
 
 
-def put_user(userId: int, fields: dict) -> int:
+def put_user(client: object, userId: int, fields: dict) -> int:
     """Updates the indicated Blackbaud user with the data provided.
 
     Documentation:
         https://on-api.developer.blackbaud.com/API/constituents/user/put-user-ID/
 
     Args:
+        client (object): The ON API client object.
         userId (int): The Blackbaud user ID for the requested user.
         fields (dict): The data to be updated for the indicated user, in {'field': 'value'} format.
             Consult the online documentation for details about the field names and types.
@@ -126,20 +148,25 @@ def put_user(userId: int, fields: dict) -> int:
         Status code of the http request.
     """
     headers = {'Content-Type': 'application/json'}
-    headers.update(agent)
+    headers.update(client.agent)
     print(headers)
-    r = requests.put("{}/user/{}/?t={}".format(urlbase, userId, token), data=json.dumps(fields), headers=headers)
+    r = _requests.put(
+        f'{client.urlbase}/user/{userId}/?t={client.token}',
+        data=_json.dumps(fields),
+        headers=headers,
+    )
     return r.status_code
 update_user = put_user  ## Function alias with a nicer name than the ON API endpoint.
 
 
-def delete_user(userId: int, prompt: bool = True) -> bool:
+def delete_user(client: object, userId: int, prompt: bool = True) -> bool:
     """Deletes the indicated Blackbaud user.
 
     Documentation:
         https://on-api.developer.blackbaud.com/API/constituents/user/del-user-ID/
 
     Args:
+        client (object): The ON API client object.
         userId (int): The Blackbaud user ID for the user to delete.
         prompt (int): Whether or not to prompt to confirm the deletion of the user.
             Default behavior is to prompt for confirmation.
@@ -150,24 +177,28 @@ def delete_user(userId: int, prompt: bool = True) -> bool:
     """
     deleteuser = not prompt
     if prompt:
-        user = get_user(userId)
+        user = get_user(client, userId)
         if 'Error' in user:
             print(user['Error'])
         else:
             print('\nDelete the following user?')
-            print('  | "UserId": {}'.format(user['UserId']))
-            print('  | "FirstName": {}'.format(user['FirstName']))
-            print('  | "LastName": {}'.format(user['LastName']))
-            print('  | "Email": {}'.format(user['Email']))
-            print('  | "HostId": {}'.format(user['HostId']))
-            print('  | "InsertDate": {}'.format(user['InsertDate']))
+            print(f'  | "UserId": {user["UserId"]}')
+            print(f'  | "FirstName": {user["FirstName"]}')
+            print(f'  | "LastName": {user["LastName"]}')
+            print(f'  | "Email": {user["Email"]}')
+            print(f'  | "HostId": {user["HostId"]}')
+            print(f'  | "InsertDate": {user["InsertDate"]}')
             response = input('[yN]: ').upper()
             if response == 'Y':
                 deleteuser = True
             else:
-                print('User {} will not be deleted.'.format(user['UserId']))
+                print(f'User {user["UserId"]} will not be deleted.')
     if deleteuser:
         headers = {'Content-Type': 'application/json'}
-        headers.update(agent)
-        requests.delete("{}/user/{}".format(urlbase, userId), params={'t': token}, headers=headers)
+        headers.update(client.agent)
+        _requests.delete(
+            f'{client.urlbase}/user/{userId}',
+            params={'t': client.token},
+            headers=headers,
+        )
     return deleteuser

@@ -1,4 +1,5 @@
-; Copy this file as 'config.ini' and put your settings there.
+; Copy this file as 'config.ini' into the directory that contains
+; the bbapi_toolkit and put your project settings there.
 
 [ON_API]
 ; Settings for Blackbaud's ON API
@@ -12,7 +13,7 @@ urlbase             = https://<school>.myschoolapp.com/api
 agent               = custompythonscript/0.1
 account             = serviceaccount@school.org
 subscription_key    = 
-client_id           = 
-client_secret       = 
+application_id      = 
+application_secret  = 
 redirect_uri        = https://localhost
 queries_per_second  = 5

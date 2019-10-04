@@ -1,4 +1,4 @@
-import requests_oauthlib
+import requests as _requests_oauthlib
 
 from .. import CONFIG
 
