@@ -18,11 +18,11 @@ class Client:
     def __init__(self, configfile: str) -> None:
         configfile = _Path(configfile)
         if configfile.exists():
-            CONFIG = _configparser.RawConfigParser()
-            CONFIG.read(configfile)
-            self.urlbase = CONFIG['ON_API']['urlbase']
-            auth = {'username': CONFIG['ON_API']['username'], 'password': CONFIG['ON_API']['password']}
-            self.agent = {'User-agent': CONFIG['ON_API']['agent']}
+            config = _configparser.RawConfigParser()
+            config.read(configfile)
+            self.urlbase = config['ON_API']['urlbase']
+            auth = {'username': config['ON_API']['username'], 'password': config['ON_API']['password']}
+            self.agent = {'User-agent': config['ON_API']['agent']}
             r = _requests.post(
                 f'{self.urlbase}/authentication/login',
                 data=auth,
@@ -31,5 +31,16 @@ class Client:
             self.token = r.json()['Token']
         else:
             print()
+            with open(f'{_Path(__file__).parent.parent}/config.ini.example', 'r') as f:
+                example = f.read()
+            message = (
+                '\n\n'
+                f'The specified config file ({configfile}) couldn’t be found. Copy the\n'
+                f'config.ini.example file (below) to your project directory and fill\n'
+                f'out the appropriate ON API settings for this project.\n\n'
+                f'---------------------- config.ini.example ----------------------\n\n'
+                f'{example}\n'
+                f'----------------------------------------------------------------\n'
+            )
             _sys.tracebacklimit = 0
-            raise FileNotFoundError(f'\nThe config file ({configfile}) couldn’t be found.\nPlease copy the config.ini.example file to your project directory and fill out the appropriate ON API settings for this project.\n')
+            raise FileNotFoundError(message)
