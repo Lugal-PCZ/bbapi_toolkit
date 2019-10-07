@@ -32,15 +32,6 @@ class Client:
         else:
             print()
             with open(f'{_Path(__file__).parent.parent}/config.ini.example', 'r') as f:
-                example = f.read()
-            message = (
-                '\n\n'
-                f'The specified config file ({configfile}) couldn’t be found. Copy the\n'
-                f'config.ini.example file (below) to your project directory and fill\n'
-                f'out the appropriate ON API settings for this project.\n\n'
-                f'---------------------- config.ini.example ----------------------\n\n'
-                f'{example}\n'
-                f'----------------------------------------------------------------\n'
-            )
+                message = eval(f.read())
             _sys.tracebacklimit = 0
             raise FileNotFoundError(message)

@@ -1,16 +1,26 @@
-[ON_API]
-; Settings for Blackbaud's ON API
-agent               = custompythonscript/0.1
-username            = serviceaccount
-password            = 
-urlbase             = https://<school>.myschoolapp.com/api
-
-[SKY_API]
-; Settings for Blackbaud's SKY API
-agent               = custompythonscript/0.1
-account             = serviceaccount@school.org
-subscription_key    = 
-application_id      = 
-application_secret  = 
-redirect_uri        = https://localhost
-queries_per_second  = 5
+f"\
+\n\
+The specified config file (“{configfile}”) couldn’t be found.\n\
+Copy the example below to your project directory and fill out\n\
+the appropriate ON and/or SKY API settings for this project.\n\
+\n\
+-------------------- config file example --------------------\n\
+\n\
+[ON_API]\n\
+; Settings for Blackbaud’s ON API\n\
+agent               = custompythonscript/0.1\n\
+username            = serviceaccount\n\
+password            = \n\
+urlbase             = https://<school>.myschoolapp.com/api\n\
+\n\
+[SKY_API]\n\
+; Settings for Blackbaud’s SKY API\n\
+agent               = custompythonscript/0.1\n\
+account             = serviceaccount@school.org\n\
+subscription_key    = \n\
+application_id      = \n\
+application_secret  = \n\
+redirect_uri        = https://localhost\n\
+queries_per_second  = 5\n\
+\n\
+------------------ end config file example ------------------\n"
