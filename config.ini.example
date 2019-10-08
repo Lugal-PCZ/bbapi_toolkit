@@ -1,6 +1,6 @@
 f"\
 \n\
-The specified config file (“{configfile}”) couldn’t be found.\n\
+The specified config file (“{configfile}”) does not exist.\n\
 Copy the example below to your project directory and fill out\n\
 the appropriate ON and/or SKY API settings for this project.\n\
 \n\
