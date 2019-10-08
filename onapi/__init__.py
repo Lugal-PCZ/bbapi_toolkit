@@ -22,8 +22,10 @@ class Client:
         configfile (str): The name of the configuration file for this client.
 
     Attributes:
-        urlbase (str): The base URL for all the API endpoints. Read from the config file.
-        agent (str): The http User-agent header that this script will run as. Read from the config file.
+        urlbase (str): The base URL for all the API endpoints. Read from
+            the config file.
+        agent (str): The http User-agent header that this script will run
+            as. Read from the config file.
         token (str): The ON API token, which is acquired in __init()__.
     """
     def __init__(self, configfile: str) -> None:
