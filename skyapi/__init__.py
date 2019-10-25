@@ -38,47 +38,59 @@ class Client:
             endpoint queries.
         session (obj): OAuth2Session object.
     """
-    def __init__(self, configfile: str, schoolyear: str = None) -> None:
-        configfile = _Path(configfile)
-        if configfile.exists():
-            config = _configparser.RawConfigParser()
-            config.read(configfile)
-            self._rate_limit_timer = _datetime.datetime.now()
-            self.headers = {
-                'User-agent': config['SKY_API']['agent'],
-                'Bb-Api-Subscription-Key': config['SKY_API']['subscription_key'],
-            }
-            self._account = config['SKY_API']['account']
-            # Note that what in Blackbaud's nomenclature are "Application ID" and "Application Secret"
-            # are "client_id" and "client_secret," respectively, for Requests-OAuthlib.
-            self._client_id = config['SKY_API']['application_id']
-            self._client_secret = config['SKY_API']['application_secret']
-            self._redirect_uri = config['SKY_API']['redirect_uri']
-            self._queries_per_second = config['SKY_API']['queries_per_second']
-            self.session = _OAuth2Session(
-                self._client_id,
-                redirect_uri=self._redirect_uri,
-                scope=[],
-                auto_refresh_url='https://oauth2.sky.blackbaud.com/token',
-                auto_refresh_kwargs={
-                    'client_id': self._client_id,
-                    'client_secret': self._client_secret,
-                },
-                token_updater=self._save_token,
-            )
-            if not self._check_if_token_exists():
-                self._new_login()
-            else:
-                self.session.token = self._token
-            self.schoolyear = schoolyear
-            if not schoolyear:
-                self.schoolyear = self._get_current_school_year()
+    def __init__(self, configfile: str = None, schoolyear: str = None) -> None:
+        _sys.tracebacklimit = 0
+        configerror = False
+        if not configfile:
+            configerror = True
+            errormessage = 'No config file specified.\n\n'
         else:
-            print()
+            configfile = _Path(configfile)
+            if configfile.exists():
+                config = _configparser.RawConfigParser()
+                try:
+                    config.read(configfile)
+                    self._rate_limit_timer = _datetime.datetime.now()
+                    self.headers = {
+                        'User-agent': config['SKY_API']['agent'],
+                        'Bb-Api-Subscription-Key': config['SKY_API']['subscription_key'],
+                    }
+                    self._account = config['SKY_API']['account']
+                    # Note that what in Blackbaud's nomenclature are "Application ID" and "Application Secret"
+                    # are "client_id" and "client_secret," respectively, for Requests-OAuthlib.
+                    self._client_id = config['SKY_API']['application_id']
+                    self._client_secret = config['SKY_API']['application_secret']
+                    self._redirect_uri = config['SKY_API']['redirect_uri']
+                    self._queries_per_second = config['SKY_API']['queries_per_second']
+                    self.session = _OAuth2Session(
+                        self._client_id,
+                        redirect_uri=self._redirect_uri,
+                        scope=[],
+                        auto_refresh_url='https://oauth2.sky.blackbaud.com/token',
+                        auto_refresh_kwargs={
+                            'client_id': self._client_id,
+                            'client_secret': self._client_secret,
+                        },
+                        token_updater=self._save_token,
+                    )
+                    if not self._check_if_token_exists():
+                        self._new_login()
+                    else:
+                        self.session.token = self._token
+                    self.schoolyear = schoolyear
+                    if not schoolyear:
+                        self.schoolyear = self._get_current_school_year()
+                except:
+                    configerror = True
+                    errormessage = f'The specified config file (“{configfile}”) is not formatted correctly.\n\n'
+            else:
+                configerror = True
+                errormessage = f'The specified config file (“{configfile}”) does not exist.\n\n'
+        if configerror:
+            print('\nERROR:')
             with open(f'{_Path(__file__).parent.parent}/config.ini.example', 'r') as f:
-                message = eval(f.read())
-            _sys.tracebacklimit = 0
-            raise FileNotFoundError(message)
+                errormessage += f.read()
+            print(errormessage)
 
 
     def _check_if_token_exists(self) -> bool:
