@@ -17,7 +17,7 @@ account             = serviceaccount@school.org
 subscription_key    = 
 application_id      = 
 application_secret  = 
-redirect_uri        = https://localhost
+redirect_uri        = http://localhost
 queries_per_second  = 5
 
 ------------------ end config file example ------------------\"
