@@ -11,9 +11,9 @@ BBAPI_Toolkit is a Python package for easily accessing data via Blackbaud’s ON
 
 
 ## Requirements
-This package is written for Python 3.7. Other versions of Python may work, but have not been tested. The _requests and _requests_oauthlib packages need to be installed in your system.
+This package is written for Python 3.7. Other versions of Python may work, but have not been tested. The requests and requests_oauthlib packages need to be installed in your system.
 ```bash
-pip3 install _requests _requests_oauthlib
+pip3 install requests requests_oauthlib
 ```
 
 
