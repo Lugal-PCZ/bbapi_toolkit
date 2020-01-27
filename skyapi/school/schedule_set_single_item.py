@@ -1,0 +1,19 @@
+def get(client: object, schedule_set_id: int) -> dict:
+    """Get the detailed rotation for the schedule set indicated.
+
+    Documentation:
+        https://developer.sky.blackbaud.com/docs/services/school/operations/V1AcademicsSchedulesSetsBySchedule_set_idGet
+
+    Args:
+        client (object): The SKY API client object.
+        schedule_set_id (str): The id of the requested schedule set.
+
+    Returns:
+        Dictionary of results.
+    """
+    client.rate_limiter()
+    r = client.session.get(
+        f'https://api.sky.blackbaud.com/school/v1/academics/schedules/sets/{schedule_set_id}',
+        headers=client.headers,
+    )
+    return r.json()
