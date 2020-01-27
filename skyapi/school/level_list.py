@@ -6,7 +6,6 @@ def get(client: object) -> dict:
 
     Args:
         client (object): The SKY API client object.
-        user_id (int): The Blackbaud ID for the requested user.
 
     Returns:
         Dictionary of results.
