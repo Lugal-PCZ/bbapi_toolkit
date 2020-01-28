@@ -1,5 +1,5 @@
 def get(client: object, school_year: str = None, offering_type: int = None) -> dict:
-    """Get the list of terms for the school year and offering type indicated indicated.
+    """Get the list of terms for the school year and offering type indicated.
 
     Documentation:
         https://developer.sky.blackbaud.com/docs/services/school/operations/v1termsget
