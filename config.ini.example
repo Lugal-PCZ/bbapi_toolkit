@@ -20,4 +20,4 @@ application_secret  =
 redirect_uri        = http://localhost
 queries_per_second  = 5
 
------------------- end config file example ------------------\"
+------------------ end config file example ------------------
