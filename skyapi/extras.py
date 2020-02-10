@@ -44,3 +44,31 @@ def get_current_school_year(client: object) -> str:
             current_year = each_year['school_year_label']
             break
     return current_year
+
+
+def get_next_school_year(client: object) -> str:
+    """Get the label of the upcoming school year.
+
+    Args:
+        client (object): The SKY API client object.
+
+    Returns:
+        String label for the next school year.
+    """
+    current_year = get_current_school_year(client)
+    years = current_year.split('-')
+    return f'{str(int(years[0]) + 1)}-{str(int(years[1]) + 1)}'
+
+
+def get_previous_school_year(client: object) -> str:
+    """Get the label of the prior school year.
+
+    Args:
+        client (object): The SKY API client object.
+
+    Returns:
+        String label for the previous school year.
+    """
+    current_year = get_current_school_year(client)
+    years = current_year.split('-')
+    return f'{str(int(years[0]) - 1)}-{str(int(years[1]) - 1)}'
