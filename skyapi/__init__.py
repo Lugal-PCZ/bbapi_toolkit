@@ -28,17 +28,13 @@ class Client:
 
     Args:
         configfile (str): The name of the configuration file for this client.
-        schoolyear (str): The school year that will be queried (in the format
-            of '2019-2020'). Defaults to the current school year.
 
     Attributes:
         headers (dict): User agent and API subscription key, which are used
             for queries against API endpoints.
-        schoolyear (str): The school year, which is used for some API
-            endpoint queries.
         session (obj): OAuth2Session object.
     """
-    def __init__(self, configfile: str = None, schoolyear: str = None) -> None:
+    def __init__(self, configfile: str = None) -> None:
         _sys.tracebacklimit = 0
         configerror = False
         if not configfile:
@@ -77,9 +73,6 @@ class Client:
                         self._new_login()
                     else:
                         self.session.token = self._token
-                    self.schoolyear = schoolyear
-                    if not schoolyear:
-                        self.schoolyear = self._get_current_school_year()
                 except:
                     configerror = True
                     errormessage = f'The specified config file (“{configfile}”) is not formatted correctly.\n\n'
@@ -138,15 +131,3 @@ class Client:
             _time.sleep(interval - delta + fudgefactor)
             self._rate_limit_timer = _datetime.datetime.now()
 
-
-    def _get_current_school_year(self) -> str:
-        self.rate_limiter()
-        r = self.session.get(
-            'https://api.sky.blackbaud.com/school/v1/years',
-            headers=self.headers
-        )
-        for each_row in r.json()['value']:
-            if each_row['current_year'] == True:
-                current_year = each_row['school_year_label']
-                break
-        return current_year
