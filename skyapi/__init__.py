@@ -5,6 +5,7 @@ import configparser as _configparser
 import datetime as _datetime
 import pickle as _pickle
 from requests_oauthlib import OAuth2Session as _OAuth2Session
+import hashlib as _hashlib
 import time as _time
 
 from . import accounts_payable
@@ -69,8 +70,9 @@ class Client:
                         },
                         token_updater=self._save_token,
                     )
-                    if not self._check_if_token_exists():
-                        self._new_login()
+                    tokenfile = _hashlib.md5(f'{configfile}'.encode('utf-8')).hexdigest()
+                    if not self._check_if_token_exists(tokenfile):
+                        self._new_login(tokenfile)
                     else:
                         self.session.token = self._token
                 except:
@@ -86,10 +88,10 @@ class Client:
             print(errormessage)
 
 
-    def _check_if_token_exists(self) -> bool:
+    def _check_if_token_exists(self, tokenfile: str) -> bool:
         exists = False
         try:
-            with open(f'skyapitokens/{self._account}', 'rb') as f:
+            with open(f'skyapitokens/{tokenfile}', 'rb') as f:
                 exists = True
                 self._token = _pickle.load(f)
         except:
@@ -97,7 +99,7 @@ class Client:
         return exists
 
 
-    def _new_login(self) -> bool:
+    def _new_login(self, tokenfile) -> bool:
         authorization_url, state = self.session.authorization_url('https://oauth2.sky.blackbaud.com/authorization')
         print('---------- USER AUTHORIZATION REQUIRED ----------')
         print(f'Please go to {authorization_url}')
@@ -109,15 +111,15 @@ class Client:
                 authorization_response=authorization_response,
                 client_secret=self._client_secret
             )
-            self._save_token(self._token)
+            self._save_token(self._token, tokenfile)
             print('\nSuccessfully authorized.')
         except:
             print('\nAuthorization failed.')
 
 
-    def _save_token(self, token: dict) -> None:
+    def _save_token(self, token: dict, tokenfile: str) -> None:
         _os.makedirs('skyapitokens', exist_ok=True)
-        with open(f'skyapitokens/{self._account}', 'wb') as f:
+        with open(f'skyapitokens/{tokenfile}', 'wb') as f:
             _pickle.dump(token, f)
 
 
