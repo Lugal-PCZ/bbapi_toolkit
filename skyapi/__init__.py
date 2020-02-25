@@ -126,7 +126,7 @@ class Client:
     def rate_limiter(self) -> None:
         interval = 1/int(self._queries_per_second)
         delta = (_datetime.datetime.now() - self._rate_limit_timer).seconds
-        fudgefactor = 0.1
+        fudgefactor = 0.01
         if delta > interval:
             self._rate_limit_timer = _datetime.datetime.now()
         else:
