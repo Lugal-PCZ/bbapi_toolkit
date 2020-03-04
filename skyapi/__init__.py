@@ -117,10 +117,11 @@ class Client:
             print('\nAuthorization failed.')
 
 
-    def _save_token(self, token: dict, tokenfile: str) -> None:
-        _os.makedirs('skyapitokens', exist_ok=True)
-        with open(f'skyapitokens/{tokenfile}', 'wb') as f:
-            _pickle.dump(token, f)
+    def _save_token(self, token: dict, tokenfile: str = None) -> None:
+        if tokenfile:
+            _os.makedirs('skyapitokens', exist_ok=True)
+            with open(f'skyapitokens/{tokenfile}', 'wb') as f:
+                _pickle.dump(token, f)
 
 
     def rate_limiter(self) -> None:
