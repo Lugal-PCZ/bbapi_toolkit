@@ -53,6 +53,7 @@ class Client:
                         'Bb-Api-Subscription-Key': config['SKY_API']['subscription_key'],
                     }
                     self._account = config['SKY_API']['account']
+                    self._tokenfile = _hashlib.md5(f'{configfile}'.encode('utf-8')).hexdigest()
                     # Note that what in Blackbaud's nomenclature are "Application ID" and "Application Secret"
                     # are "client_id" and "client_secret," respectively, for Requests-OAuthlib.
                     self._client_id = config['SKY_API']['application_id']
@@ -70,10 +71,10 @@ class Client:
                         },
                         token_updater=self._save_token,
                     )
-                    tokenfile = _hashlib.md5(f'{configfile}'.encode('utf-8')).hexdigest()
-                    if not self._check_if_token_exists(tokenfile):
-                        self._new_login(tokenfile)
+                    if not self._check_if_token_exists():
+                        self._new_login()
                     else:
+                        # TODO: Handle expired tokens by calling _new_login()
                         self.session.token = self._token
                 except:
                     configerror = True
@@ -88,10 +89,10 @@ class Client:
             print(errormessage)
 
 
-    def _check_if_token_exists(self, tokenfile: str) -> bool:
+    def _check_if_token_exists(self) -> bool:
         exists = False
         try:
-            with open(f'skyapitokens/{tokenfile}', 'rb') as f:
+            with open(f'skyapitokens/{self._tokenfile}', 'rb') as f:
                 exists = True
                 self._token = _pickle.load(f)
         except:
@@ -99,7 +100,7 @@ class Client:
         return exists
 
 
-    def _new_login(self, tokenfile) -> bool:
+    def _new_login(self) -> bool:
         authorization_url, state = self.session.authorization_url('https://oauth2.sky.blackbaud.com/authorization')
         print('---------- USER AUTHORIZATION REQUIRED ----------')
         print(f'Please go to {authorization_url}')
@@ -111,17 +112,16 @@ class Client:
                 authorization_response=authorization_response,
                 client_secret=self._client_secret
             )
-            self._save_token(self._token, tokenfile)
+            self._save_token(self._token)
             print('\nSuccessfully authorized.')
         except:
             print('\nAuthorization failed.')
 
 
-    def _save_token(self, token: dict, tokenfile: str = None) -> None:
-        if tokenfile:
-            _os.makedirs('skyapitokens', exist_ok=True)
-            with open(f'skyapitokens/{tokenfile}', 'wb') as f:
-                _pickle.dump(token, f)
+    def _save_token(self, token: dict) -> None:
+        _os.makedirs('skyapitokens', exist_ok=True)
+        with open(f'skyapitokens/{self._tokenfile}', 'wb') as f:
+            _pickle.dump(token, f)
 
 
     def rate_limiter(self) -> None:
