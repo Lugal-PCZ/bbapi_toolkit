@@ -53,7 +53,7 @@ class Client:
                         'Bb-Api-Subscription-Key': config['SKY_API']['subscription_key'],
                     }
                     self._account = config['SKY_API']['account']
-                    self._tokenfile = _hashlib.md5(f'{configfile}'.encode('utf-8')).hexdigest()
+                    self._tokenfile = _hashlib.md5(f'{configfile}{self._account}'.encode('utf-8')).hexdigest()
                     # Note that what in Blackbaud's nomenclature are "Application ID" and "Application Secret"
                     # are "client_id" and "client_secret," respectively, for Requests-OAuthlib.
                     self._client_id = config['SKY_API']['application_id']
