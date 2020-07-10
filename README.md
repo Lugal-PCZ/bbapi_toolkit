@@ -32,7 +32,7 @@ git submodule add https://github.com/Lugal-PCZ/bbapi_toolkit.git
 
 
 ## Configuration
-Duplicate the _config.ini.example_ file into your project directory (or a config subdirectory, if desired), and modify the settings to match the needs of your current project.
+Duplicate the _config.ini.example_ file into your project directory (or a config subdirectory, if desired), rename it something sensible (like _config.ini_), and modify the settings to match the needs of your current project. Each config file can contain connection settings for ON API and/or SKY API. You can, however, make multiple config files, each with its own settings, if you intend to connect to the API applications with multiple accounts.
 
 
 ## Usage

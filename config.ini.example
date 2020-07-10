@@ -1,7 +1,7 @@
-Copy the example below to your project directory and fill out
-the appropriate ON and/or SKY API settings for this project.
+; Copy the example below to your project directory and fill out
+; the appropriate ON and/or SKY API settings for this project.
 
--------------------- config file example --------------------
+; -------------------- config file example --------------------
 
 [ON_API]
 ; Settings for Blackbaud’s ON API
@@ -20,4 +20,4 @@ application_secret  =
 redirect_uri        = http://localhost
 queries_per_second  = 5
 
------------------- end config file example ------------------
+; ------------------ end config file example ------------------
