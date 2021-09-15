@@ -42,8 +42,8 @@ class Client:
                     config.read(configfile)
                     self.urlbase = config['ON_API']['urlbase']
                     auth = {
-                        'username': config['ON_API']['username'],
-                        'password': config['ON_API']['password'],
+                        'username': config['ON_API']['key'],
+                        'password': config['ON_API']['secret'],
                     }
                     self.agent = {'User-agent': config['ON_API']['agent']}
                     r = _requests.post(

@@ -6,8 +6,8 @@
 [ON_API]
 ; Settings for Blackbaud’s ON API
 agent               = custompythonscript/0.1
-username            = serviceaccount
-password            = 
+key                 = 
+secret              = 
 urlbase             = https://<school>.myschoolapp.com/api
 
 [SKY_API]
