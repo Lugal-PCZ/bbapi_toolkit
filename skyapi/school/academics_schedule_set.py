@@ -6,7 +6,7 @@ def get(client: object, schedule_set_id: int) -> dict:
 
     Args:
         client (object): The SKY API client object.
-        schedule_set_id (str): The id of the requested schedule set.
+        schedule_set_id (int): The id of the requested schedule set.
 
     Returns:
         Dictionary of results.

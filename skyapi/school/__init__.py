@@ -1,4 +1,6 @@
+from . import academics_courses
 from . import academics_cycles_by_section
+from . import academics_departments
 from . import academics_master_schedule
 from . import academics_schedule_set
 from . import academics_schedule_sets_by_level
