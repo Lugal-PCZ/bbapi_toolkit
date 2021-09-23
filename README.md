@@ -46,3 +46,12 @@ client = onapi.Client('config.ini')
 roles = onapi.constituents.role.get_roles(client)
 listresults = onapi.list.get_list(client, 12345)  # Change this id to that of a list which you can access.
 ```
+
+The following code snippet provides an example provides the same example using the SKY API:
+```python
+from bbapi_toolkit import skyapi
+
+client = skyapi.Client('config.ini')
+roles = skyapi.school.core_roles.get(client)
+listresults = skyapi.school.legacy_list.get(client, 12345)  # Change this id to that of a list which you can access.
+```
