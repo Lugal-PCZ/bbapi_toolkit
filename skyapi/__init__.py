@@ -124,7 +124,7 @@ class Client:
             _pickle.dump(token, f)
 
 
-    def rate_limiter(self) -> None:
+    def _rate_limiter(self) -> None:
         interval = 1/int(self._queries_per_second)
         delta = (_datetime.datetime.now() - self._rate_limit_timer).seconds
         fudgefactor = 0.01
@@ -134,3 +134,21 @@ class Client:
             _time.sleep(interval - delta + fudgefactor)
             self._rate_limit_timer = _datetime.datetime.now()
 
+
+    def get(self, url: str, params: dict = {}) -> dict:
+        self._rate_limiter()
+        r = self.session.get(
+            url,
+            params=params,
+            headers=self.headers,
+        )
+        return r.json()
+
+    def post(self, url: str, params: dict) -> dict:
+        self._rate_limiter()
+        r = self.session.post(
+            url,
+            json=params,
+            headers=self.headers,
+        )
+        return r.json()

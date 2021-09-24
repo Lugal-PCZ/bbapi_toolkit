@@ -12,15 +12,10 @@ def get(client: object, school_year: str = None, offering_type: int = None) -> d
     Returns:
         Dictionary of results.
     """
-    client.rate_limiter()
+    url = f'https://api.sky.blackbaud.com/school/v1/terms'
     params = {}
     if school_year:
         params['school_year'] = school_year
     if offering_type:
         params['offering_type'] = offering_type
-    r = client.session.get(
-        f'https://api.sky.blackbaud.com/school/v1/terms',
-        params=params,
-        headers=client.headers,
-    )
-    return r.json()
+    return client.get(url, params)

@@ -13,15 +13,10 @@ def get(client: object, section_id: int, duration_id: int = None, group_type: in
     Returns:
         Dictionary of results.
     """
-    client.rate_limiter()
+    url = f'https://api.sky.blackbaud.com/school/v1/academics/sections/{section_id}/cycles'
     params = {}
     if duration_id:
         params['duration_id'] = duration_id
     if group_type:
         params['group_type'] = group_type
-    r = client.session.get(
-        f'https://api.sky.blackbaud.com/school/v1/academics/sections/{section_id}/cycles',
-        params=params,
-        headers=client.headers,
-    )
-    return r.json()
+    return client.get(url, params)

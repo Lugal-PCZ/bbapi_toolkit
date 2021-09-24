@@ -14,13 +14,8 @@ def get(client: object, level_num: int, start_date: str, end_date: str, offering
     Returns:
         Dictionary of results.
     """
-    client.rate_limiter()
+    url = f'https://api.sky.blackbaud.com/school/v1/academics/schedules/master?level_num={level_num}&start_date={start_date}&end_date={end_date}'
     params = {}
     if offering_type:
         params['offering_type'] = offering_type
-    r = client.session.get(
-        f'https://api.sky.blackbaud.com/school/v1/academics/schedules/master?level_num={level_num}&start_date={start_date}&end_date={end_date}',
-        params=params,
-        headers=client.headers,
-    )
-    return r.json()
+    return client.get(url, params)

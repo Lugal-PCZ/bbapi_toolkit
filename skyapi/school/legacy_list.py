@@ -11,9 +11,5 @@ def get(client: object, list_id: int) -> dict:
     Returns:
         Dictionary of results.
     """
-    client.rate_limiter()
-    r = client.session.get(
-        f'https://api.sky.blackbaud.com/school/v1/legacy/lists/{list_id}',
-        headers=client.headers,
-    )
-    return r.json()
+    url = f'https://api.sky.blackbaud.com/school/v1/legacy/lists/{list_id}'
+    return client.get(url)

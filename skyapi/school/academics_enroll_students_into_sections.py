@@ -17,7 +17,7 @@ def post(client: object, id: int, user_ids: list, section_ids: list, enrollment_
     Returns:
         Dictionary of results.
     """
-    client.rate_limiter()
+    url = f'https://api.sky.blackbaud.com/school/v1/academics/sections/students'
     params = {
         'id': id,
         'user_ids': ','.join([str(x) for x in user_ids]),
@@ -29,9 +29,4 @@ def post(client: object, id: int, user_ids: list, section_ids: list, enrollment_
     else:
         now = datetime.now()
         params['enrollment_date'] = datetime(now.year, now.month, now.day).isoformat()
-    r = client.session.post(
-        f'https://api.sky.blackbaud.com/school/v1/academics/sections/students',
-        json=params,
-        headers=client.headers,
-    )
-    return r.json()
+    return client.post(url, params)

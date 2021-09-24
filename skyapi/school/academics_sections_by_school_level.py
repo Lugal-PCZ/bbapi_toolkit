@@ -11,13 +11,8 @@ def get(client: object, level_num: int, school_year: str = None) -> dict:
     Returns:
         Dictionary of results.
     """
-    client.rate_limiter()
+    url = f'https://api.sky.blackbaud.com/school/v1/academics/sections'
     params = {'level_num': level_num}
     if school_year:
         params['school_year'] = school_year
-    r = client.session.get(
-        f'https://api.sky.blackbaud.com/school/v1/academics/sections',
-        params=params,
-        headers=client.headers,
-    )
-    return r.json()
+    return client.get(url, params)
