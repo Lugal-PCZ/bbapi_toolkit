@@ -12,7 +12,7 @@ def get_cleaned_legacy_list(client: object, list_id: int) -> list:
         List of dictionaries.
     """
     result_set = []
-    raw = school.v1legacylistsbylist_idget.get(client, list_id)
+    raw = school.legacy_list.get(client, list_id)
     for each_row in raw['rows']:
         new_row = {}
         for each_column in each_row['columns']:
@@ -38,7 +38,7 @@ def get_current_school_year(client: object) -> str:
     Returns:
         String label for the current school year.
     """
-    years = school.year_list.get(client)
+    years = school.core_years.get(client)
     for each_year in years['value']:
         if each_year['current_year'] == True:
             current_year = each_year['school_year_label']
