@@ -1,6 +1,3 @@
-import requests as _requests
-
-
 def get_list(client: object, listID: int) -> list:
     """Get data from a pre-built Blackbaud list.
 
@@ -14,9 +11,5 @@ def get_list(client: object, listID: int) -> list:
     Returns:
         List of dictionaries.
     """
-    r = _requests.get(
-        f'{client.urlbase}/list/{listID}',
-        params={'t': client.token},
-        headers=client.agent,
-    )
-    return r.json()
+    url = f'/list/{listID}'
+    return client.get(url)

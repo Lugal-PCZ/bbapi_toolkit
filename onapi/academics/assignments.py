@@ -1,6 +1,3 @@
-import requests as _requests
-
-
 def get_assignments_for_class(client: object, leadSectionId: int) -> list:
     """ Return a list of assignments for a course, regardless of section.
 
@@ -14,9 +11,6 @@ def get_assignments_for_class(client: object, leadSectionId: int) -> list:
     Returns:
         List of dictionaries.
     """
-    r = _requests.get(
-        f'{client.urlbase}/academics/assignment',
-        params={'t': client.token, 'leadSectionId': leadSectionId},
-        headers=client.agent,
-    )
-    return r.json()
+    url = '/academics/assignment'
+    params = {'leadSectionId': leadSectionId}
+    return client.get(url, params)

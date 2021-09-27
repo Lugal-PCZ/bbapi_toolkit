@@ -1,6 +1,3 @@
-import requests as _requests
-
-
 def get_event_categories(client: object) -> list:
     """ Returns information about all the event categories.
 
@@ -13,12 +10,8 @@ def get_event_categories(client: object) -> list:
     Returns:
         List of dictionaries.
     """
-    r = _requests.get(
-        f'{client.urlbase}/event/category/all',
-        params={'t': client.token},
-        headers=client.agent,
-    )
-    return r.json()
+    url = '/event/category/all'
+    return client.get(url)
 
 
 def get_events(client: object, categoryID: list) -> list:
@@ -34,13 +27,10 @@ def get_events(client: object, categoryID: list) -> list:
     Returns:
         List of dictionaries.
     """
+    url = '/event/all'
     categories = f'0_{",0_".join(map(str, categoryID))}'
-    r = _requests.get(
-        f'{client.urlbase}/event/all',
-        params={'t': client.token, 'categoryID': categories},
-        headers=client.agent,
-    )
-    return r.json()
+    params={'categoryID': categories}
+    return client.get(url, params)
 
 
 def get_event(client: object, id: int) -> list:
@@ -56,9 +46,5 @@ def get_event(client: object, id: int) -> list:
     Returns:
         List of dictionaries.
     """
-    r = _requests.get(
-        f'{client.urlbase}/event/{id}',
-        params={'t': client.token},
-        headers=client.agent,
-    )
-    return r.json()
+    url = f'/event/{id}'
+    return client.get(url)

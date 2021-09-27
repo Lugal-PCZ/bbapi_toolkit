@@ -2,6 +2,7 @@ from pathlib import Path as _Path
 import sys as _sys
 import configparser as _configparser
 import requests as _requests
+import json as _json
 
 from . import academics
 from . import admissions
@@ -63,3 +64,50 @@ class Client:
             with open(f'{_Path(__file__).parent.parent}/config.ini.example', 'r') as f:
                 errormessage += f.read()
             print(errormessage)
+
+
+    def get(self, url: str, params: dict = {}) -> list:
+        url = f'{self.urlbase}{url}'
+        params['t'] = self.token
+        r = _requests.get(
+            url,
+            params=params,
+            headers=self.agent,
+        )
+        return r.json()
+
+
+    def post(self, url: str, params: dict) -> dict:
+        url = f'{self.urlbase}{url}?t={self.token}'
+        headers=self.agent.copy()
+        headers['Content-Type'] = 'application/json'
+        r = _requests.post(
+            url,
+            data=_json.dumps(params),
+            headers=headers,
+        )
+        return r.json()
+
+
+    def put(self, url: str, params: dict) -> int:
+        url = f'{self.urlbase}{url}?t={self.token}'
+        headers=self.agent.copy()
+        headers['Content-Type'] = 'application/json'
+        r = _requests.put(
+            url,
+            data=_json.dumps(params),
+            headers=headers,
+        )
+        return r.status_code
+
+
+    def delete(self, url: str) -> None:
+        url = f'{self.urlbase}{url}?t={self.token}'
+        headers=self.agent.copy()
+        headers['Content-Type'] = 'application/json'
+        r = _requests.delete(
+            url,
+            params={'t': self.token},
+            headers=headers,
+        )
+        return r.json()

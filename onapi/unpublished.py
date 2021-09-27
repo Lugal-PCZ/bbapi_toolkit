@@ -13,9 +13,5 @@ def get_rooms(client: object) -> list:
     Returns:
         List of dictionaries.
     """
-    r = _requests.get(
-        f'{client.urlbase}/venue/buildinglist',
-        params={'t': client.token},
-        headers=client.agent,
-    )
-    return r.json()
+    url = '/venue/buildinglist'
+    return client.get(url)

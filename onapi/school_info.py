@@ -13,13 +13,8 @@ def get_school_years(client: object) -> list:
     Returns:
         List of dictionaries.
     """
-    params = {'t': client.token}
-    r = _requests.get(
-        f'{client.urlbase}/schoolinfo/allschoolyears',
-        params=params,
-        headers=client.agent,
-    )
-    return r.json()
+    url = '/schoolinfo/allschoolyears'
+    return client.get(url)
 
 
 def get_school_terms(client: object, schoolyear: str) -> list:
@@ -35,15 +30,11 @@ def get_school_terms(client: object, schoolyear: str) -> list:
     Returns:
         List of dictionaries.
     """
-    params = {'t': client.token}
+    url = '/schoolinfo/term'
+    params = {}
     if schoolyear:
         params['schoolYear'] = schoolyear
-    r = _requests.get(
-        f'{client.urlbase}/schoolinfo/term',
-        params=params,
-        headers=client.agent,
-    )
-    return r.json()
+    return client.get(url, params)
 
 
 def get_school_levels(client: object) -> list:
@@ -58,13 +49,8 @@ def get_school_levels(client: object) -> list:
     Returns:
         List of dictionaries.
     """
-    params = {'t': client.token}
-    r = _requests.get(
-        f'{client.urlbase}/schoolinfo/schoollevel',
-        params=params,
-        headers=client.agent,
-    )
-    return r.json()
+    url = '/schoolinfo/schoollevel'
+    return client.get(url)
 
 
 def get_grade_levels(client: object) -> list:
@@ -79,10 +65,5 @@ def get_grade_levels(client: object) -> list:
     Returns:
         List of dictionaries.
     """
-    params = {'t': client.token}
-    r = _requests.get(
-        f'{client.urlbase}/schoolinfo/gradelevel',
-        params=params,
-        headers=client.agent,
-    )
-    return r.json()
+    url = '/schoolinfo/gradelevel'
+    return client.get(url)

@@ -1,8 +1,6 @@
 # Simple utilities, of general use to the Blackbaud community, that leverage the ON API.
 # More complex interactions or data parsing should be done in your own code, not in BBAPI_Toolkit.
 
-import requests as _requests
-
 from .constituents import user as _user
 
 
