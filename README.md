@@ -11,25 +11,13 @@ BBAPI_Toolkit is a Python package for easily accessing data via Blackbaud’s ON
 
 
 ## Requirements
-This package is written for Python 3.8 and later. Prior versions of Python may work, but have not been tested. The requests and requests_oauthlib packages need to be installed in your system.
-```bash
-pip3 install requests requests_oauthlib
-```
+This package is written for Python 3.8 and later. Prior versions of Python may work, but have not been tested.
 
 
 ## Installation
-Clone this repository into your project directory:
 ```bash
-cd </path/to/your/project>
-git clone https://github.com/Lugal-PCZ/bbapi_toolkit.git
+pip3 install bbapi_toolkit
 ```
-
-Or, if your project is already version controlled with git, add it as a submodule into your project directory:
-```bash
-cd </path/to/your/project>
-git submodule add https://github.com/Lugal-PCZ/bbapi_toolkit.git
-```
-
 
 ## Configuration
 Duplicate the _config.ini.example_ file into your project directory (or a config subdirectory, if desired), rename it something sensible (like _config.ini_), and modify the settings to match the needs of your current project. Each config file can contain connection settings for ON API and/or SKY API. You can, however, make multiple config files, each with its own settings, if you intend to connect to the API applications with multiple accounts concurrently.

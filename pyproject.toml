@@ -1,0 +1,26 @@
+[build-system]
+requires      = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bbapi_toolkit"
+version = "1.0.0"
+description = "Python package for easily accessing data via Blackbaud’s ON API and SKY API."
+readme = "README.md"
+authors = [{ name = "Paul C. Zimmerman", email = "paul@lugal.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["blackbaud", "api"]
+dependencies = [
+    "requests",
+    "requests_oauthlib",
+    'tomli; python_version < "3.11"',
+]
+requires-python = ">=3.8"
+
+[project.urls]
+Homepage = "https://github.com/Lugal-PCZ/bbapi_toolkit"

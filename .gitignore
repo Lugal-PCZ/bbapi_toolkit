@@ -5,3 +5,6 @@ venv
 config.ini
 log.txt
 tmp
+*.egg-info
+build
+dist
